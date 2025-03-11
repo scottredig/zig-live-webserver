@@ -1,5 +1,6 @@
 .{
-    .name = "live-webserver-example",
+    .name = .live_webserver_example,
+    .fingerprint = 0x8a02e1613e036fa1,
     .version = "0.0.0",
     .dependencies = .{
         .@"live-webserver" = .{

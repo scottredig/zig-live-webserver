@@ -163,7 +163,7 @@ const Request = struct {
 
     fn handleEmbed(req: *Request, comptime filename: []const u8, content_type: []const u8) !void {
         try req.http.respond(@embedFile(filename), .{
-            .extra_headers = &(.{
+            .extra_headers = &([_]std.http.Header{
                 .{ .name = "content-type", .value = content_type },
             } ++ common_headers),
         });
@@ -251,7 +251,7 @@ const Request = struct {
             .send_buffer = &buffer,
             // .content_length = metadata.size(),
             .respond_options = .{
-                .extra_headers = &(.{
+                .extra_headers = &([_]std.http.Header{
                     .{ .name = "content-type", .value = content_type },
                 } ++ common_headers),
             },
@@ -268,7 +268,7 @@ const Request = struct {
         );
         try req.http.respond("redirecting...", .{
             .status = .see_other,
-            .extra_headers = &(.{
+            .extra_headers = &([_]std.http.Header{
                 .{ .name = "location", .value = location },
                 .{ .name = "content-type", .value = "text/html" },
             } ++ common_headers),
@@ -280,7 +280,7 @@ const Request = struct {
         const text = std.fmt.comptimePrint("{d} {s}{s}{s}", .{ @intFromEnum(status), comptime status.phrase().?, sep, reason orelse "" });
         req.http.respond(text, .{
             .status = status,
-            .extra_headers = &(.{
+            .extra_headers = &([_]std.http.Header{
                 .{ .name = "content-type", .value = "text/text" },
             } ++ common_headers),
         }) catch |err| {
